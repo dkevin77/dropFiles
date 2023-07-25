@@ -1,0 +1,13 @@
+Main Documentation: https://www.elastic.co/guide/index.html
+Glossary: https://www.elastic.co/guide/en/elastic-stack-glossary/current/terms.html
+Videos and Webinars: https://www.elastic.co/videos/
+Blogs: https://www.elastic.co/blog/
+
+Hands-on Practices:
+
+https://georgebridgeman.com/exercises/
+
+https://medium.com/kreuzwerker-gmbh/exercises-for-the-elastic-certified-engineer-exam-model-data-into-elasticsearch-5eb69086cdaa
+
+Lisa Jung's (ES Developer Advocate) Blog:
+https://dev.to/lisahjung/beginner-s-guide-to-elasticsearch-4j2k

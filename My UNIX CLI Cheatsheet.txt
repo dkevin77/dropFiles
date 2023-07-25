@@ -1,0 +1,151 @@
+CLI:
+==========================================
+/ (root)
+.xxxxxx (hidden files started with .)
+
+ps
+	pstree
+	ps -l
+	ps -e
+	ps -f (long format)
+	ps -ef, ps -el, ps -efl (can combine flags in one dash)
+	ps -e | less
+	ps -e | more
+
+more (view multiple files at once (in one page), automatically back to prompt at EOF)
+less (view multiple files as a separate page, need q to quit)
+
+ls
+	ls /usr/lib
+	ls /dev
+	ls /bin
+	ls /
+	ls -a (shows hidden files)
+	ls -l (shows permission, user, last updated time, etc.)
+	ls -lS (shows long list + size, S should be capitalized, not s))
+	ls -i (shows index node of files)
+	ls -R (shows all trees of directories with all permutations)
+	ls -l | grep ^- (show only files)
+
+pwd (present working directory)
+cd
+	cd . (current directory)
+	cd .. (parent directory)
+	cd ~ (home directory)
+
+man
+ls --help
+
+[press TAB] to auto-complete
+
+mkdir
+	mkdir Day1_UNIX
+	mkdir a b c d e (5 new dirs)
+	mkdir -p UNIX/Day1_UNIX (-p creates parent directory if it does not exist)
+
+rm and rmdir (DANGER)
+	rm -f	force remove
+	rm -i interactive, asks for confirmation
+	rm -r: recurssive for folders
+	rm -fifiriifirifrif = rm -f
+	rm -iififiifi	= rm -i
+
+touch
+
+vi
+
+cat (concatenate)
+	cat a.txt
+	cat b.txt
+	cat a.txt b.txt
+	cat > a.txt (output not to terminal but to a file named a.txt)
+
+head (default first 10 lines)
+tail (default last 10 lines)
+
+head -5 a.txt (first 5 lines)
+tail -5 a.txt (last 5 lines)
+
+cp filename newfilename
+	cp -r /student_files /home/kevin.daryl/Exercise_1/tradingSystem (copy the dir, need r+e permission)
+	cp -r /student_files/*
+	cp /student_files/uniqFile .
+
+mv a b (if b is dir, move a to b, otherwise rename a to b, if b already exists then it is overwritten)
+
+wc (word counter)
+	wc -l (lines)
+	wc -m (char, including new line character)
+	
+echo
+	echo -n (omits new line character)
+	echo .bash* (outputs all files start with ".bash")
+	echo 
+	echo test*
+	echo test\*, echo 'test*', echo "test*" : escape characters to negate pattern matching (search specifically for "test*")
+
+tr (need self learn)
+	tr [:upper:] [:lower:]
+	tr [:upper:] [:lower:] < accounts (direct stdin)
+	tr a e
+		bat becomes bet
+		aaa becomes eee
+		aea becomes eee
+	tr a e < accounts
+	tr -d (delete)
+	tr -d [0-9] < accounts (delete all numbers on accounts)
+	tr -s " " < accounts (squeeze all duplicate spaces to 1 space)
+
+cut (need self learn)
+	cut -c1-3 grepFile
+	cut -d (delimeter), -f (field number)
+	cut -d '<' -f1 (delimiter, delimiter character, field left (-f1) or field right (-f2))
+
+chmod
+	chmod 755 filename
+	chmod ug+x,g-r filename
+
+find (need self learn)
+	find [dir] [flags]
+	find /student_files -name 'uniqFile'
+	find /student_files -size +1k -ls
+	find /student_files -size +1k -exec ls -l {} \;
+	find ~ -type f -empty | wc -l (count the number of empty files in home)
+	find ~ -type f -empty -exec rm -i {} \; (find empty files in home and remove them interactively)
+	find ~ -type f -mtime -1 > recentfiles (there's -atime (access/read time) -ctime (changed metadata time, e.g. file permission) -mtime (modified, changed in actual file))
+	find ~ -name '*.dat' (remember * is wildcard not regex, ~ is /home/kevin.daryl)
+
+grep and RegEx [VERY IMPORTANT]
+	grep regex source (search for the regex within source)
+	grep -w (whole words, need to match beginning and ending (excluding punctuations))
+	grep -n (prefix results with line number)
+	grep -v (inverse match)
+	grep -c (gives you total count only)
+	grep -i (ignore cases)
+	grep -v -f temp accounts (match everything in accounts except temp, grep -f basically match a regex on a file)
+	grep -o (only matching) , e.g. grep -o '[^/]*$' meaning only matching very last word after the last / (useful to manipulate file name within a long path with many folder tree).
+
+sort
+	sort accounts
+	sort -t (delimeter), -k (field number)
+	sort -t ':' -k4 accounts (sort alphabetically based on fields number 4 with delimeter ':' )
+	sort -n -t ':' -k4 accounts (sort numerically based on fields number 4 with delimeter ':' )
+
+uniq
+	only uniq ADJACENT words
+	to be really unique, sort file | uniq
+	uniq -c (prefix lines by number of occurences)
+	uniq -d (only show duplicates)
+	uniq -u (only show uniques)
+
+env
+	shows your own environment setting
+
+which
+	find the binary path of UNIX commands
+	which ls
+
+who
+	details of who's online
+
+

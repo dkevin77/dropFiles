@@ -1,0 +1,234 @@
+shebang: #!/bin/bash
+-------------------------
+mkdir bin
+vi bin/...
+-------------------------
+Debugging: bash -x script
+-------------------------
+Immediate exit status: echo $? (0 success, 1/+ failed)
+-------------------------
+Command-line arguments
+
+	$n retrieve nth argument
+	$# return argument count
+	$* return all arguments
+	$? return exit status
+	${#VAR} returns length of string VAR
+
+Interactive script - read
+
+	read var
+	echo "user input is $var"
+
+	read -p "What is your name?" name
+	echo "Hi, $name!"
+
+Command substitution (direct command's outputs to a variable)
+
+	numOfUsers=$(who | wc -l)
+	arguments cant be substituted as length of str - ${#$1} WON'T work - var=$1, ${#var} WILL work
+	
+Slicing of Strings
+	var=$1
+	e.g. i=1, take first letter of string:
+		echo "${var:$(i-1):1}"
+
+Array variables
+	
+	names[0]="Bob"
+	names[1]="Julie"
+	names=("Bob" "Julie" "Andrew" "Alice")
+	echo ${names[2]}
+	echo ${names[*]} - outputs the whole array
+
+Arithmetic
+	
+	echo $((3+2))
+	echo $[3+2*5]
+	result2=$(echo "scale=3; (8/3) ^ 3" | bc) - 3dp, need to pipe to bc to show decimal otherwise just integer (2)
+	echo $result2
+
+Conditionals
+	if command1			if [ 5 -gt 3 ] (all spaces required)
+	then
+		code
+	else/elif
+		code
+	fi
+
+OR
+
+	if command ; then
+		code
+	fi
+
+Test Expression (syntax: if [ flag ... ]; then ... ; else ... ; fi)
+	File:
+		-e exists
+		-d is directory
+		-f regular file
+		-h symbolic link
+		-r readable
+		-w writable
+		-x executable
+		-s exists and non zero
+	String:
+		s1 = s2 strings are the same
+		s1 != s2 strings are not the same
+		-z s1 string has zero length
+		-n s1 string is non-zero length
+	Numerical
+		n1 -eq n2 =
+		-ne =/=
+		-lt <
+		-le <=
+		-gt >
+		-ge >=
+		
+	
+Logic Gates
+	if [ condition 1 ] || [ condition 2 ] - can be && too
+
+Case Statements
+	case $input in
+		1)
+			echo "You entered 1" ;;
+		2)
+			echo "You entered 2" ;;
+		*) (any other)
+			echo "Invalid input" ;;
+	esac
+
+Flow Control
+	for i in 1 3 5 6 7
+	for i in {1..7}
+	for ((i=1;i<=10;i++)) - mathematical operation, double round brackets
+	for i in $*
+	for file in $(ls)
+	for student in ${students[*]}
+	do
+		echo $i
+	done
+
+	while [condition]; do
+		code
+		((i++)) - mathematical operation, double round brackets
+	done
+
+	while read line; do #iterating through lines in a file (given in the form of user argument)
+		echo $line
+		sleep 0.5
+	done < $1
+	OR
+	file=$(cat lines.txt)
+	for line in $file; do
+		...
+	done
+
+	until [ condition ]; do - loop terminates if the condition is true only
+		code
+	done
+
+	break - breaks current loop
+	continue - terminates current interation and proceed to next iteration
+
+	break 2 - breaks 2 outer loops
+	continue 2 - skips 2 interations
+
+	Infinite loops:
+		while true
+		for (( ; ; ))
+
+Functions
+
+	function function_name2() {
+		code
+	}
+	
+	function_name() {
+		code
+	}
+	
+	greeting() {
+		echo "Hello, $1"
+	}
+	
+	returning_function() {
+		result=$(($1+$2))
+		echo $result #echo is used to return values inside function
+	}
+
+	return_code() {
+		case $1 in
+			[a-zA-Z])
+				return 0;; #return code can only be used if to return exit codes (binary 0 1)
+			*)
+				return 1;;
+		esac
+	}
+
+	function_name #calling the function_name
+	function_name2 #calling the function_name2
+	greeting Bob #calling greeting and passing the argument "Bob" as $1 inside greeting
+	echo $(returning_function 19 22) #calling returning_function and print out the returned value
+	read -p "Input a letter" input
+	if return_code $input; do
+		code (executed if 0 is returned)
+	else
+		code (executed if 1 is returned)
+	done
+
+Built-in Commands
+
+	getopts:
+	
+	while getopts asmd opt; do
+		case $opt in
+			a) echo "add" ;;
+			s) echo "substract" ;;
+			m) echo "multiple" ;;
+			d) echo "divide" ;;
+			\?) echo "$0: invalid option -- '$OPTARG'" #this is for other options not listed. $OPTARG is to retrieve the user's invalid option input
+				exit 1;;
+		esac
+	done
+	
+	getopts -sm
+	>>>substract
+	>>>multiple
+	
+	shift[n]:
+		
+	shift arguments by n
+
+	echo "$*"
+	shift 2
+	echo "$*"
+	
+	shift -am b c
+
+	>>> -am b c
+	>>> c (shifted by 2)
+
+	getops and shift are used interchangebly to differentiate options and arguments
+
+	$OPTIND: returns the index of option to be processed next
+	
+	since we can't know how many to shift (coz user can do -a -d -f or -ad -f or even -daf), can use $(OPTIND - 1)
+	
+	$(OPTIND - 1) is to start checking for arguments, not options
+	
+	shift $(OPTIND - 1) is usually used outside a getops function, cos no use of shifting inside the function if you are going to echo some command line arguments outside the function
+
+	eval:
+
+		var = "ls | wc -l"
+		echo $var
+		>>> error, coz the shell interprets it to list " | wc -l"
+
+		eval $var
+		>>> works, cos eval forces the shell to evaluate a varaible as a series of commands
+
+	
+
+	
